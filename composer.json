@@ -1,0 +1,34 @@
+{
+  "name": "google-analyticator",
+  "description": "@todo",
+  "version": "7.0.0",
+  "type": "project",
+  "homepage": "https://github.com/GoogleAnalyticator/google-analyticator",
+  "license": "GPL-2.0+",
+  "authors": [
+    {
+      "name" : "Video User Manuals Pty Ltd",
+      "homepage" : "http://www.videousermanuals.com"
+    },
+    {
+      "name" : "Christian Foellmann",
+      "email" : "foellmann@foe-services.de",
+      "homepage" : "http://christian.foellmann.de"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/GoogleAnalyticator/google-analyticator/issues"
+  },
+  "require": {
+    "google/apiclient": "1.0.*@beta"
+  },
+  "autoload": {
+    "psr-4": {
+      "GoogleAnalyticator\\": "GoogleAnalyticator/"
+    }
+  },
+  "config": {
+    "vendor-dir": "libs",
+    "autoloader-suffix": "GoogleAnalyticator"
+  }
+}
