@@ -8,6 +8,9 @@
 
 namespace GoogleAnalyticator;
 
+// Exit if accessed directly
+if ( ! defined( 'ABSPATH' ) ) { exit; }
+
 /**
  * Settings API Class
  *
@@ -58,10 +61,10 @@ class SettingsAPI {
 
 	public function __construct( $instance_args = array() ) {
 
-//		$this->screen = convert_to_screen( null );
+		// $this->screen = convert_to_screen( null );
 
 		$args = wp_parse_args( $instance_args, array(
-//			'id' => $this->screen->id,
+			// 'id' => $this->screen->id,
 			'title'   => __( 'Settings' ),
 			'tabbed'  => false,
 			'ajax'    => false,
@@ -105,7 +108,7 @@ class SettingsAPI {
 
 	protected function register_section( $tab, $section, $values ) {
 
-		if ( isset( $values['desc'] ) && !empty( $values['desc'] ) ) {
+		if ( isset( $values['desc'] ) && ! empty( $values['desc'] ) ) {
 //			$values['desc']	 = '<div class="inside">' . $values['desc'] . '</div>';
 			$callback = create_function( '', 'echo "<p>' . str_replace( '"', '\"', $values['desc'] ) . '</p>";' );
 		} else {
@@ -225,7 +228,7 @@ class SettingsAPI {
 	}
 
 	public function set_tabs( $tabs = array() ) {
-//		return array( 'tab' => 'nontab' );
+		// return array( 'tab' => 'nontab' );
 		$this->settings_tabs = $tabs;
 
 		return $this;
@@ -246,7 +249,7 @@ class SettingsAPI {
 		$tabs = $this->get_tabs();
 		$active_tab = $this->get_active_tab( $tabs );
 
-		echo '<h2 class="nav-tab-wrapper" id="' . $this->_args['id'] . '" >';
+		echo '<h2 class="nav-tab-wrapper" id="' . esc_attr( $this->_args['id'] ) . '" >';
 
 			foreach ( (array) $tabs as $id => $title  ) {
 
@@ -271,8 +274,8 @@ class SettingsAPI {
 
 		} // END foreach
 
-//		global $wp_settings_fields;
-//		var_dump($wp_settings_fields);
+		// global $wp_settings_fields;
+		// var_dump($wp_settings_fields);
 
 	}
 
@@ -289,8 +292,8 @@ class SettingsAPI {
 
 		echo "</div>";
 
-//		global $wp_settings_sections;
-//		var_dump($wp_settings_sections);
+		// global $wp_settings_sections;
+		// var_dump($wp_settings_sections);
 
 	}
 
@@ -319,7 +322,7 @@ class SettingsAPI {
         $value = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
         $size = isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : 'regular';
 
-//		<input id="blogdescription" class="regular-text" type="text" value="Just another WP Trunk Sites site" name="blogdescription">
+		// <input id="blogdescription" class="regular-text" type="text" value="Just another WP Trunk Sites site" name="blogdescription">
 
         $html = sprintf( '<input type="text" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s"/>', $size, $args['option'], $args['id'], $value );
         $html .= sprintf( '<p class="description"> %s</p>', $args['desc'] );
@@ -507,4 +510,4 @@ class SettingsAPI {
 //		printf( "<script type='text/javascript'>settings_args = %s;</script>\n", json_encode( $args ) );
 	}
 
-} // END class
+} // END class SettingsAPI
