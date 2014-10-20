@@ -34,8 +34,8 @@ class Admin {
 			'title' => __( 'Google Analytics', 'google-analyticator' ) . ' &rsaquo; ' . __( 'Settings', 'google-analyticator' ),
 			'tabbed' => true,
 		);
-		
-		$this->settings = new \GoogleAnalyticator\SettingsAPI( $args );
+
+		$this->settings = new \GoogleAnalyticator\Settings( $args );
 
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
 		add_action( 'admin_menu', array( $this, 'admin_menu' ), 9 );
