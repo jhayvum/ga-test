@@ -43,14 +43,15 @@ class Admin {
 
 	} // END __construct()
 
-	function admin_init() {
+	public function admin_init() {
 
 		$this->settings->set_tabs( $this->get_tabs() );
 		$this->settings->set_sections( $this->get_sections() );
 		$this->settings->set_fields( $this->get_fields() );
 
         $this->settings->register_settings();
-    }
+
+    } // END admin_init()
 
 	public function admin_menu() {
 
@@ -88,10 +89,8 @@ class Admin {
 	 }
 
 	public function page_settings() {
-
 		$this->settings->display();
-
-	} // END
+	} // END page_settings()
 
 	public function page_overview() {
 		echo 'OVERVIEW';
@@ -135,6 +134,8 @@ class Admin {
 
 	public function get_fields() {
 
+		$defaults = GoogleAnalyticator()->get_defaults();
+
 		$fields = array(
 			'main' => array(
 				'google_ua'	 => array(
@@ -150,10 +151,11 @@ class Admin {
 				),
 			),
 			'widget' => array(
-				'google_ua'	 => array(
-					'label'	 => __( 'Text Input (integer validation)', 'google-analyticator' ),
+				'show_widget' => array(
+					'label'	 => __( 'Widget Active?', 'google-analyticator' ),
 					'desc'	 => __( 'Text input description', 'google-analyticator' ),
 					'type'	 => 'checkbox',
+					'default' => $defaults['widget']['show_widget']
 				),
 				'textarea'	 => array(
 					'label'	 => __( 'Textarea Input', 'google-analyticator' ),

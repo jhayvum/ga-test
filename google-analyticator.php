@@ -113,7 +113,11 @@ class GoogleAnalyticator {
 
 	public function get_defaults() {
 
-		$defaults = array();
+		$defaults = array(
+			'widget' => array(
+				'show_widget' => 'on',
+			),
+		);
 
 		return apply_filters( 'google_analyticator_defaults', $defaults );
 
