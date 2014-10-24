@@ -38,8 +38,7 @@ class Admin {
 		$this->settings = new \GoogleAnalyticator\Settings( $args );
 
 		add_action( 'admin_init', array( $this, 'admin_init' ) );
-		add_action( 'admin_menu', array( $this, 'admin_menu' ), 9 );
-		add_action( 'admin_menu', array( $this, 'admin_menu_settings' ), 99 );
+		add_action( 'admin_menu', array( $this, 'admin_menu_settings' ) );
 
 	} // END __construct()
 
@@ -53,34 +52,12 @@ class Admin {
 
     } // END admin_init()
 
-	public function admin_menu() {
-
-		add_menu_page(
-			__( 'Analytics', 'google-analyticator' ),
-			__( 'Analytics', 'google-analyticator' ),
-			'manage_options',
-			'google-analyticator',
-			array( $this, 'page_overview' ),
-			'dashicons-chart-area'
-		);
-
-		add_submenu_page(
-			'google-analyticator',
-			__( 'Analytics', 'google-analyticator' ) . ' &rsaquo; ' . __( 'Overview', 'google-analyticator' ),
-			__( 'Overview', 'google-analyticator' ),
-			'manage_options',
-			'google-analyticator',
-			array( $this, 'page_overview' )
-		);
-
-	} // END admin_menu()
-
 	 public function admin_menu_settings() {
 
 		add_submenu_page(
-			'google-analyticator',
+			'options-general.php',
 			__( 'Analytics', 'google-analyticator' ) . ' &rsaquo; ' . __( 'Settings', 'google-analyticator' ),
-			__( 'Settings', 'google-analyticator' ),
+			__( 'Google Analytics', 'google-analyticator' ),
 			'manage_options',
 			'google-analyticator-settings',
 			array( $this, 'page_settings' )
@@ -157,12 +134,12 @@ class Admin {
 					'type'	 => 'checkbox',
 					'default' => $defaults['widget']['show_widget']
 				),
-				'textarea'	 => array(
+				'some'	 => array(
 					'label'	 => __( 'Textarea Input', 'google-analyticator' ),
 					'desc'	 => __( 'Textarea description', 'google-analyticator' ),
 					'type'	 => 'checkbox',
 				),
-				'checkbox'	 => array(
+				'thing'	 => array(
 					'label'	 => __( 'Checkbox', 'google-analyticator' ),
 					'desc'	 => __( 'Checkbox Label', 'google-analyticator' ),
 					'type'	 => 'select', // multiselect

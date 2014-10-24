@@ -63,15 +63,18 @@ class SettingsAPI {
 
 	public function __construct( $instance_args = array() ) {
 
-		// $this->screen = convert_to_screen( null );
+		$instance_args['id'] = sanitize_key( $instance_args['id'] );
 
-		$args = wp_parse_args( $instance_args, array(
-			// 'id' => $this->screen->id,
-			'title'   => __( 'Settings' ),
-			'tabbed'  => false,
-			'ajax'    => false,
-			'sidebar' => false, // @todo sidebar "post-new.php"-style
-		) );
+		$args = wp_parse_args(
+			$instance_args,
+			array(
+				// 'id' => $this->screen->id,
+				'title'   => __( 'Settings' ),
+				'tabbed'  => false,
+				'ajax'    => false,
+				'sidebar' => false, // @todo sidebar "post-new.php"-style
+			)
+		);
 
 		$this->_args = $args;
 
@@ -282,12 +285,12 @@ class SettingsAPI {
 
 		$active_tab = $active ? 'display: block;' : 'display: none;';
 
-		echo "<div id='section-{$id}' class='settings-section' style='{$active_tab}'>";
+		echo "<div id='section-{$id}' class='settings-section' style='{$active_tab}'>"; // @todo ESC attributes required?
 
 		$page = $this->_args['id'] . '_' . $id;
 		do_settings_sections( $page );
 
-		echo 'do_settings_sections: ' . $page; // TEMP
+		echo 'do_settings_sections: ' . $page; // TEMP debug
 
 		echo "</div>";
 
@@ -323,10 +326,10 @@ class SettingsAPI {
 	 */
 	public function field_checkbox( $args ) {
 
-		$value = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
+		$value = esc_attr( $this->get_option( $args['id'], $args['option'], $args['std'] ) );
 
 		$html = sprintf( '<input type="hidden" name="%1$s[%2$s]" value="off" />', $args['section'], $args['id'] );
-		$html .= sprintf( '<input type="checkbox" class="checkbox" id="%1$s[%2$s]" name="%1$s[%2$s]" value="on"%4$s />', $args['section'], $args['id'], $value, checked( $value, 'on', false ) );
+		$html .= sprintf( '<input type="checkbox" class="checkbox" id="%1$s[%2$s]" name="%1$s[%2$s]" value="on"%4$s />', $args['option'], $args['id'], $value, checked( $value, 'on', false ) );
 		$html .= sprintf( '<label for="%1$s[%2$s]"> %3$s</label>', $args['section'], $args['id'], $args['desc'] );
 
 		echo $html;
@@ -343,7 +346,7 @@ class SettingsAPI {
 
 		$html = '';
 		foreach ( $args['options'] as $key => $label ) {
-			$html .= sprintf( '<input type="radio" class="radio" id="%1$s[%2$s][%3$s]" name="%1$s[%2$s]" value="%3$s"%4$s />', $args['section'], $args['id'], $key, checked( $value, $key, false ) );
+			$html .= sprintf( '<input type="radio" class="radio" id="%1$s[%2$s][%3$s]" name="%1$s[%2$s]" value="%3$s"%4$s />', $args['option'], $args['id'], $key, checked( $value, $key, false ) );
 			$html .= sprintf( '<label for="%1$s[%2$s][%4$s]"> %3$s</label><br>', $args['section'], $args['id'], $label, $key );
 		}
 		$html .= sprintf( '<span class="description"> %s</label>', $args['desc'] );
@@ -359,9 +362,9 @@ class SettingsAPI {
 	public function field_textarea( $args ) {
 
 		$value = esc_textarea( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
-		$size = isset( $args['size'] ) && !is_null( $args['size'] ) ? $args['size'] : 'regular';
+		$size = isset( $args['size'] ) && ! is_null( $args['size'] ) ? $args['size'] : 'regular';
 
-		$html = sprintf( '<textarea rows="5" cols="55" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]">%4$s</textarea>', $size, $args['section'], $args['id'], $value );
+		$html = sprintf( '<textarea rows="5" cols="55" class="%1$s-text" id="%2$s[%3$s]" name="%2$s[%3$s]">%4$s</textarea>', $size, $args['option'], $args['id'], $value );
 		$html .= sprintf( '<br><span class="description"> %s</span>', $args['desc'] );
 
 		echo $html;
@@ -379,7 +382,7 @@ class SettingsAPI {
 		$value = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
 		$size = isset( $args['size'] ) && ! is_null( $args['size'] ) ? $args['size'] : 'regular';
 
-		$html = sprintf( '<select class="%1$s" name="%2$s[%3$s]" id="%2$s[%3$s]">', $size, $args['section'], $args['id'] );
+		$html = sprintf( '<select class="%1$s" name="%2$s[%3$s]" id="%2$s[%3$s]">', $size, $args['option'], $args['id'] );
 		foreach ( $args['options'] as $key => $label ) {
 			$html .= sprintf( '<option value="%s"%s>%s</option>', $key, selected( $value, $key, false ), $label );
 		}
@@ -399,6 +402,8 @@ class SettingsAPI {
 
 	/**
 	 * Get the value of a settings field
+	 *
+	 * @todo account for option != section
 	 *
 	 * @param string  $option  settings field name
 	 * @param string  $section the section name this field belongs to
@@ -433,6 +438,7 @@ class SettingsAPI {
 		<?php
 		/**
 		 * @todo implement localStorage to save open tab
+		 *
 		jQuery(document).ready(function($) {
 			// Switches option sections
 			$('.group').hide();

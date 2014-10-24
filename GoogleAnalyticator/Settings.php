@@ -12,7 +12,7 @@ namespace GoogleAnalyticator;
 if ( ! defined( 'ABSPATH' ) ) { exit; }
 
 /**
- * @todo
+ * Extends the SettingsAPI class to add custom field types
  *
  * @since 0.0.1
  */
